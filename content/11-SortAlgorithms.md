@@ -18,6 +18,9 @@
 ## マージソート
 マージソートは、再帰的な分割統治法の例として古典的なアルゴリズムである。配列aを半分ずつに分け、その配列a0, a1を再帰的に整列し、a0, a1を併合することで、整列済みの配列aを得る。
 
+定理: mergeSort(a)の実行時間は $$O(n\log n)$$ であり、最大で $$n\log n$$ 回の比較を行う
+
+
 ```cpp
 void mergeSort(array<T> &a) {
 	if (a.length <= 1) return; // 要素数が1なら整列済み
@@ -49,26 +52,35 @@ void merge(array<T> &a0, array<T> &a1, array<T> &a) {
 }
 ```
 
-- mergeSort(a)の実行時間は $$O(n\log n)$$ であり、最大で $$n\log n$$ 回の比較を行う
 
+## クイックソート
+クイックソートはマージソートと異なり、事前に全ての処理を済ませる。クイックソートでは、配列aからランダムにx（軸, pivot）を選ぶ。そして、xより小さい要素、同じ要素、大きい要素の3つにaを分割する。そして、分割の1つめと3つ目を再帰的に整列する。
 
-```cpp
-
-```
-
+定理: quickSort(a)の実行時間の期待値は $$O(n\log n)$$ である。また、実行される比較の回数の期待値は2n ln n+  $$O(n)$$ 以下である
 
 ```cpp
+void quickSort(array<T> &a) {
+	quickSort(a, 0, a.length);
+}
+void quickSort(array<T> &a, int i, int n) {
+	if (n <= 1) return; // 要素1は整列済み
+	T x = a[i + rand() % n];
+	int p = i-1, j = i, q = i+n; // pは増加、qは減少していく
 
+	while (j < q) {
+		int comp = compare(a[j], x); // ランダムに抽出したxとa[i]と比較する
+		if (comp < 0) {
+			a.swap(j++, ++p); // 配列の前方に移す
+		} else if (comp > 0) {
+			a.swap(j, --q); // 配列の後方に移す
+		} else {
+			j++;
+		}
+	}
+
+	quickSort(a, i, p-i+1);
+	quickSort(a, q, n-(q-i));
+}
 ```
 
-
-```cpp
-
-```
-
-
-```cpp
-
-```
-
-
+クイックソートは、入力配列a以外にはどの時点でも定数個の変数しか使わない。省メモリなソートアルゴリズム。ランダム二分探索木と深い関係がある。
