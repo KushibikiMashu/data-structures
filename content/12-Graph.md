@@ -10,3 +10,5 @@
 - inEdges(i):  $$ (j,i) \in E $$ を満たす整数jのリストを返す
 
 addEdge, removeEdge, hasEdgeはUSetを使って実装できる（ハッシュテーブルなら実行時間は定数）。outEdge, inEdgeは各頂点ごとに隣接する頂点のリストを保持すれば、定数時間で実行できる。
+
+## AdjacencyMatrix: 行列によるグラフ表現
